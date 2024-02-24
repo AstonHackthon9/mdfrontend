@@ -1,0 +1,80 @@
+.interview-form-container {
+  max-width: 600px; /* Adjust the width as necessary */
+  margin: 0 auto; /* Center the form in the page */
+  padding: 2rem; /* Add some padding around the form */
+  background-color: #84C7AE; /* White background */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.interview-form-container h2 {
+  text-align: center; /* Center the heading */
+  color: #333; /* Dark grey color for the text */
+  margin-bottom: 1.5rem; /* Space below the heading */
+}
+
+.interview-form-container form {
+  display: flex;
+  flex-direction: column; /* Stack the inputs vertically */
+}
+
+.interview-form-container input[type="text"],
+.interview-form-container input[type="email"],
+.interview-form-container button {
+  padding: 0.5rem; /* Add some padding inside the inputs and button */
+  margin-bottom: 1rem; /* Space between each field */
+  border: 1px solid #ccc; /* A light grey border */
+  border-radius: 4px; /* Slightly round the edges of the inputs */
+}
+
+.interview-form-container button {
+  background-color: #4CAF50; /* A green background for the button */
+  color: white; /* White text for the button */
+  border: none; /* No border for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.interview-form-container button:hover {
+  background-color: #45a049; /* Darken the button on hover */
+}
+
+/* You may need to add more specific styles for the upload button and the layout */
+/* This will get you started with a basic look that you can then customize */
+.interviewer-entry {
+    display: flex;
+    align-items: center;
+  }
+  
+  .add-interviewer-button {
+    margin-left: 10px; /* Space between the input and the button */
+    /* Additional styling for the button */
+  }
+  /* ... Other styles ... */
+
+.add-interviewer-button,
+.remove-interviewer-button {
+  padding: 0 15px;
+  margin-left: 10px;
+  background-color: #ff0000; /* Green background for add button */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.remove-interviewer-button {
+  background-color: #ff1100; /* Red background for remove button */
+}
+
+.add-interviewer-button:hover {
+  background-color: #45a049; /* Darker green background on hover for add button */
+}
+
+.remove-interviewer-button:hover {
+  background-color: #b30707; /* Darker red background on hover for remove button */
+}
+
+/* ... Other styles ... */
