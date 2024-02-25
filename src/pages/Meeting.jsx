@@ -1,10 +1,15 @@
 import React from 'react'
-import CodeEditor from '../components/CodeEditor'
 import Compiler from '../components/Compiler'
+import DrawingCanvas from '../components/DrawingCanvas'
+
+
 
 const Meeting = () => {
   return (
+    <>
     <Compiler/>
+    <DrawingCanvas/>    
+    </>
   )
 }
 
