@@ -90,7 +90,7 @@ function InterviewForm() {
           value={interviewTime}
           onChange={(e) => setInterviewTime(e.target.value)}
         />
-        <button type="submit">Upload CV</button>
+        <button type="input">Upload CV</button>
       </form>
     </div>
   );

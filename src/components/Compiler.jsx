@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Editor from '@monaco-editor/react';
 import "../styles/compiler.css";
-import { Grid } from "@mui/material";
+import { Box, Grid, Paper } from "@mui/material";
 
 const Compiler = () => {
   const [input, setInput] = useState(localStorage.getItem('input') || '');
@@ -96,22 +96,26 @@ const Compiler = () => {
         outputText.innerHTML = "";
         outputText.innerHTML += `\n Error :${compilationError}`;
       }
+      console.log("Output text", outputText)
     } catch (error) {
       console.error("An error occurred during submission:", error);
     }
   };
+  
 
   return (
     <>
-      <div className="row container-fluid">
-        <Grid item md={6} className="col-6 ml-4 ">
+    <Paper sx={{padding:'10px', height:'100%'}}>
+      <Grid container className="row container-fluid">
+        <Grid item md={12} className="col-6 ml-4 ">
           <label htmlFor="solution ">
             <span className="badge badge-info heading mt-2 ">
               <i className="fas fa-code fa-fw fa-lg"></i> Code Here
             </span>
           </label>
           <Editor 
-                height="50vh"
+                height="60vh"
+                width="100%"
                 theme="vs-dark" 
                 defaultLanguage="javascript" 
                 defaultValue="// write your code here!"
@@ -149,15 +153,15 @@ const Compiler = () => {
             <option value="63">Java Script</option>
           </select>
         </Grid>
-        <div className="col-5">
+        <Grid item md={12} className="col-5">
           <div>
             <span className="badge badge-info heading my-2 ">
-              <i className="fas fa-exclamation fa-fw fa-md"></i> Output
+              <i className="fas fa-exclamation fa-fw fa-md"></i>
             </span>
-            <div id="output"></div>
+            <Box sx={{height:'100px'}} id="output"></Box>
           </div>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       {/* <div className="mt-2 ml-5">
         <span className="badge badge-primary heading my-2 ">
           <i className="fas fa-user fa-fw fa-md"></i> User Input
@@ -165,6 +169,7 @@ const Compiler = () => {
         <br />
         <textarea id="input" onChange={userInputChange}></textarea>
       </div> */}
+    </Paper>
     </>
   );
 };

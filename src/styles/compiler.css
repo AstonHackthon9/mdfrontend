@@ -2,7 +2,8 @@
     display: inline;
   }
   .heading {
-    font-size: 20px;
+    font-size: 15px;
+    margin-left: 20px;
   }
   #source {
     width: 100% !important;
@@ -19,8 +20,14 @@
     font-size: 17px;
   }
   #output {
+    white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
     background: #cccccc52;
-    width: 50%;
+    width: 100%;
+    height: auto;
     top: 7.6%;
     font-size: 18px;
     right: 0;
