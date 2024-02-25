@@ -39,7 +39,7 @@ let pc = new RTCPeerConnection(servers);
 let localStream = null;
 let remoteStream = null;
 
-document.addEventListener('DOMContentLoaded', function(){
+
 
     const webcamButton = document.getElementById('webcamButton');
     const webcamVideo = document.getElementById('webcamVideo');
@@ -77,6 +77,44 @@ document.addEventListener('DOMContentLoaded', function(){
         webcamButton.disabled = true;
       };
     }
+
+    const startCam = () => {
+        document.getElementById('webcamButton').onclick = async () => {
+            console.log('Clicked')
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            remoteStream = new MediaStream();
+          
+            // Push tracks from local stream to peer connection
+            localStream.getTracks().forEach((track) => {
+              pc.addTrack(track, localStream);
+            });
+          
+            // Pull tracks from remote stream, add to video stream
+            pc.ontrack = (event) => {
+              event.streams[0].getTracks().forEach((track) => {
+                remoteStream.addTrack(track);
+              });
+            };
+            
+        
+            document.getElementById('webcamVideo').srcObject = localStream;
+
+            if(document.getElementById('remoteVideo')){
+                document.getElementById('remoteVideo').srcObject = remoteStream;
+            }
+          
+            if(document.getElementById('callButton')){
+                document.getElementById('callButton').disabled = false;
+            }
+        if(document.getElementById('answerButton')){
+            document.getElementById('answerButton').disabled = false;
+        }
+        if(document.getElementById('webcamButton')){
+
+            document.getElementById('webcamButton').disabled = true;
+        }
+    }
+}
 
     // 2. Create an offer
     if(callButton){
@@ -126,10 +164,12 @@ document.addEventListener('DOMContentLoaded', function(){
         hangupButton.disabled = false;
       };
     }
+
     
     // 3. Answer the call with the unique ID
     if(answerButton){
       answerButton.onclick = async () => {
+        console.log("Ans Clicked")
         const callId = callInput.value;
         const callDoc = firestore.collection('calls').doc(callId);
         const answerCandidates = callDoc.collection('answerCandidates');
@@ -166,8 +206,45 @@ document.addEventListener('DOMContentLoaded', function(){
       };
     }
 
+    const ansCall = () => {
+        console.log("Ans Clicked")
+        const callId = callInput.value;
+        const callDoc = firestore.collection('calls').doc(callId);
+        const answerCandidates = callDoc.collection('answerCandidates');
+        const offerCandidates = callDoc.collection('offerCandidates');
+      
+        pc.onicecandidate = (event) => {
+          event.candidate && answerCandidates.add(event.candidate.toJSON());
+        };
+      
+        const callData = ( callDoc.get()).data();
+      
+        const offerDescription = callData.offer;
+         pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
+      
+        const answerDescription =  pc.createAnswer();
+         pc.setLocalDescription(answerDescription);
+      
+        const answer = {
+          type: answerDescription.type,
+          sdp: answerDescription.sdp,
+        };
+      
+         callDoc.update({ answer });
+      
+        offerCandidates.onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            console.log(change);
+            if (change.type === 'added') {
+              let data = change.doc.data();
+              pc.addIceCandidate(new RTCIceCandidate(data));
+            }
+          });
+        });
+}
+
     console.log('getUserMedia' in navigator.mediaDevices);
-})
+
 
 
 function CustomTabPanel(props) {
@@ -237,13 +314,15 @@ const Meeting = () => {
         </Grid>
         <Grid item md={4} >
             <Paper sx={{height:'300px', margin:'10px 10px', backgroundColor:'#EEEDEB'}}>
-            <button id="webcamButton">Start webcam</button>
+            <Button onClick={startCam} id="webcamButton">Start webcam</Button>
             <input id="callInput" />
-            <button id="answerButton" disabled>Answer</button>
+            <button onClick={ansCall} id="answerButton" disabled>Answer</button>
             <button id="hangupButton" disabled>Hangup</button>
             </Paper>
-            <Paper id="webcamVideo" sx={{height:'300px', margin:'70px 10px 0 10px', backgroundColor:'#EEEDEB'}}>
+            <Paper sx={{height:'300px', margin:'70px 10px 0 10px', backgroundColor:'#EEEDEB'}}>
+                <div id="webcamVideo">
 
+                </div>
             </Paper>
         </Grid>
     </Grid>
